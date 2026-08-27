@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enquiries | Session 23</title>
+  <meta name="description" content="Booking, ticketing and brand partnership enquiries for Session 23.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a href="index.html" class="logo">SESSION <span>23</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="enquiry.html" aria-current="page">Enquiries</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-header container">
+      <p class="eyebrow">Let's Talk</p>
+      <h1>Enquiries</h1>
+      <p>Bookings, tickets, or brand partnerships — tell us what you're after.</p>
+    </div>
+
+    <section>
+      <div class="container">
+        <!--
+          Note: this form has no backend yet — it's a static HTML front end.
+          For submission handling, wire it up to something like Formspree,
+          or a server-side script, in a later module.
+        -->
+        <form class="form-grid" action="#" method="post">
+          <div>
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+
+          <div>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div>
+            <label for="type">Enquiry Type</label>
+            <select id="type" name="type" required>
+              <option value="">Select one</option>
+              <option value="booking">Event Booking</option>
+              <option value="partnership">Brand Partnership</option>
+              <option value="tickets">Ticket Support</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="event">Event / Date (if applicable)</label>
+            <input type="text" id="event" name="event" placeholder="e.g. The Nirvana Experience">
+          </div>
+
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required placeholder="Tell us a bit more..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="justify-self:start;">Send Enquiry</button>
+
+          <p class="form-note">
+            We aim to respond to all enquiries within 2–3 business days. For urgent ticket
+            issues, reach out via <a href="https://www.instagram.com/Ses_sion23" target="_blank" rel="noopener" style="color:var(--gold);">Instagram</a> instead.
+          </p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <p>&copy; 2026 Session 23. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/Ses_sion23" target="_blank" rel="noopener">Instagram</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
