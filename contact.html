@@ -34,28 +34,33 @@
       <div class="container contact-grid">
         <div>
           <h2 style="font-size:1.5rem;">Get In Touch</h2>
-          <ul class="contact-list">
-            <li>
-              <div class="k">Email</div>
-            
-              <div class="v">contactsession23@gmail.com</div>
-            </li>
-            <li>
-              <div class="k">Instagram</div>
-              <div class="v"><a href="https://www.instagram.com/Ses_sion23" target="_blank" rel="noopener" style="color:var(--gold);">@Ses_sion23</a></div>
-            </li>
-            <li>
-              <div class="k">Cities</div>
-              <div class="v">Gqeberha &amp; Johannesburg</div>
-            </li>
-            <li>
-              <div class="k">Response Time</div>
-              <div class="v">Within 2–3 business days</div>
-            </li>
-          </ul>
+          <!-- <address> is the correct semantic element for the contact
+               details of the page/site's owner — browsers and assistive
+               tech treat it as machine-readable contact info, not just
+               another block of text. -->
+          <address class="contact-list">
+            <dl>
+              <div class="contact-row">
+                <dt class="k">Email</dt>
+                <dd class="v"><a href="mailto:contactsession23@gmail.com" style="color:inherit;">contactsession23@gmail.com</a></dd>
+              </div>
+              <div class="contact-row">
+                <dt class="k">Instagram</dt>
+                <dd class="v"><a href="https://www.instagram.com/Ses_sion23" target="_blank" rel="noopener" style="color:var(--gold);">@Ses_sion23</a></dd>
+              </div>
+              <div class="contact-row">
+                <dt class="k">Cities</dt>
+                <dd class="v">Gqeberha &amp; Johannesburg</dd>
+              </div>
+              <div class="contact-row">
+                <dt class="k">Response Time</dt>
+                <dd class="v">Within 2–3 business days</dd>
+              </div>
+            </dl>
+          </address>
         </div>
 
-        <div class="card">
+        <aside class="card">
           <h3>Before You Message Us</h3>
           <p style="margin-bottom:1rem;">
             Looking to book Session 23 for an event, or explore a brand partnership? Use the
@@ -63,7 +68,7 @@
             it routes your request straight to the right person.
           </p>
           <a href="enquiry.html" class="btn btn-gold">Go To Enquiry Form</a>
-        </div>
+        </aside>
       </div>
     </section>
   </main>

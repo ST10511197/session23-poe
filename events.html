@@ -33,9 +33,11 @@
     <section>
       <div class="container">
         <!-- TODO: replace all placeholder dates/venues/ticket links with confirmed details -->
-        <div class="ticket">
+        <!-- Each listing is an <article>: it's a self-contained piece of content
+             (one event) that would still make sense syndicated on its own. -->
+        <article class="ticket">
           <div class="ticket-main">
-            <div class="ticket-date">Date — TBC</div>
+            <div class="ticket-date"><time datetime="">Date — TBC</time></div>
             <h3>The Nirvana Experience</h3>
             <p>Amapiano &amp; House. Doors, lineup and ticket link to be confirmed.</p>
           </div>
@@ -43,11 +45,11 @@
             <span class="loc">Gqeberha</span>
             <a href="enquiry.html" class="btn btn-outline" style="padding:0.5rem 1rem;font-size:0.7rem;">Get Tickets</a>
           </div>
-        </div>
+        </article>
 
-        <div class="ticket">
+        <article class="ticket">
           <div class="ticket-main">
-            <div class="ticket-date">Date — TBC</div>
+            <div class="ticket-date"><time datetime="">Date — TBC</time></div>
             <h3>The Switch: Vol. 2 — Denim &amp; Friends Edition</h3>
             <p>Dress code: denim. House &amp; Hip-Hop set curated for the whole night.</p>
           </div>
@@ -55,11 +57,11 @@
             <span class="loc">Johannesburg</span>
             <a href="enquiry.html" class="btn btn-outline" style="padding:0.5rem 1rem;font-size:0.7rem;">Get Tickets</a>
           </div>
-        </div>
+        </article>
 
-        <div class="ticket">
+        <article class="ticket">
           <div class="ticket-main">
-            <div class="ticket-date">Date — TBC</div>
+            <div class="ticket-date"><time datetime="">Date — TBC</time></div>
             <h3>Session 23: Next Edition</h3>
             <p>Details dropping soon on Instagram — follow @Ses_sion23 to be first to know.</p>
           </div>
@@ -67,7 +69,7 @@
             <span class="loc">TBC</span>
             <a href="https://www.instagram.com/Ses_sion23" target="_blank" rel="noopener" class="btn btn-outline" style="padding:0.5rem 1rem;font-size:0.7rem;">Follow</a>
           </div>
-        </div>
+        </article>
       </div>
     </section>
 
@@ -78,13 +80,59 @@
           <h2>The Archive</h2>
           <div class="divider"></div>
         </div>
-        <div class="grid">
-          <!-- TODO: swap in real photos and captions from past events -->
-          <div class="card">
-            <h3>Gallery — Coming Soon</h3>
-            <p>Photos from past Sessions will be added here once available.</p>
-          </div>
+        <!--
+          Responsive image gallery: each photo ships in 3 widths (400/800/1600px)
+          and the browser picks the right one via srcset + sizes, instead of
+          always downloading the largest file. See README changelog for notes.
+          Each tile is a <figure>/<figcaption> pair (the correct semantic element
+          for an image plus its caption) wrapped by an <a> so the photo itself
+          stays the focusable/clickable control, not the whole tile.
+        -->
+        <div class="gallery-feature">
+          <figure class="gallery-item gallery-item--main">
+            <a href="images/gallery/gallery-nirvana-1600.jpg" target="_blank" rel="noopener">
+              <img
+                src="images/gallery/gallery-nirvana-800.jpg"
+                srcset="images/gallery/gallery-nirvana-400.jpg 400w,
+                        images/gallery/gallery-nirvana-800.jpg 800w,
+                        images/gallery/gallery-nirvana-1600.jpg 1600w"
+                sizes="(max-width: 600px) 92vw, (max-width: 1024px) 60vw, 640px"
+                alt="Aerial view of a Session 23 rooftop deck event at night, with the DJ booth, lounge seating and guests gathered around low tables"
+                loading="lazy" width="1600" height="2328">
+            </a>
+            <figcaption class="gallery-caption">Rooftop Session &middot; Full House</figcaption>
+          </figure>
+          <figure class="gallery-item gallery-item--side-a">
+            <a href="images/gallery/gallery-switch-1600.jpg" target="_blank" rel="noopener">
+              <img
+                src="images/gallery/gallery-switch-800.jpg"
+                srcset="images/gallery/gallery-switch-400.jpg 400w,
+                        images/gallery/gallery-switch-800.jpg 800w,
+                        images/gallery/gallery-switch-1600.jpg 1600w"
+                sizes="(max-width: 600px) 92vw, (max-width: 1024px) 40vw, 320px"
+                alt="Two Session 23 DJs mixing on a harbour-side deck, one wearing headphones around his neck"
+                loading="lazy" width="1600" height="2357">
+            </a>
+            <figcaption class="gallery-caption">On The Decks &middot; Session 23</figcaption>
+          </figure>
+          <figure class="gallery-item gallery-item--side-b">
+            <a href="images/gallery/gallery-floor-1600.jpg" target="_blank" rel="noopener">
+              <img
+                src="images/gallery/gallery-floor-800.jpg"
+                srcset="images/gallery/gallery-floor-400.jpg 400w,
+                        images/gallery/gallery-floor-800.jpg 800w,
+                        images/gallery/gallery-floor-1600.jpg 1600w"
+                sizes="(max-width: 600px) 92vw, (max-width: 1024px) 40vw, 320px"
+                alt="Crowd dressed in white dancing under the marquee at a Session 23 night"
+                loading="lazy" width="1600" height="2230">
+            </a>
+            <figcaption class="gallery-caption">The Dance Floor &middot; Session 23</figcaption>
+          </figure>
         </div>
+        <p class="form-note">
+          A first set of real Session 23 event photography — more will be added to the archive
+          after every future night.
+        </p>
       </div>
     </section>
   </main>
