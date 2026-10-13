@@ -1,0 +1,599 @@
+/* ==========================================================================
+   Session 23 — "Party With The English"
+   Stylesheet
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #0b0b0c;
+  --bg-alt: #151517;
+  --bg-card: #1b1b1e;
+  --gold: #c9a227;
+  --gold-bright: #e8c661;
+  --cream: #f2ede1;
+  --muted: #9a958a;
+  --line: #2a2a2c;
+  --radius: 2px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Manrope', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+/* <mark> used sparingly in body copy to flag the genre name on first mention
+   — themed to the brand palette instead of the browser-default yellow. */
+mark {
+  background: rgba(201, 162, 39, 0.22);
+  color: var(--gold-bright);
+  padding: 0 0.15em;
+}
+
+blockquote { quotes: none; }
+
+/* <details>/<summary> (FAQ accordion on the Enquiry page) */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.9rem;
+}
+details + details { margin-top: -0.1rem; }
+summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--cream);
+  list-style: none;
+}
+summary::-webkit-details-marker { display: none; }
+summary::after {
+  content: "+";
+  float: right;
+  color: var(--gold);
+  font-family: 'Anton', sans-serif;
+}
+details[open] summary::after { content: "–"; }
+details p { color: var(--muted); margin-top: 0.85rem; font-size: 0.95rem; }
+
+h1, h2, h3, .display {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ---------- Header / Nav ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(11, 11, 12, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.logo span { color: var(--gold); }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.nav-links a {
+  color: var(--muted);
+  transition: color 0.2s ease;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  color: var(--cream);
+  border-bottom-color: var(--gold);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--cream);
+  font-size: 1.3rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.8rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--bg);
+}
+.btn-gold:hover { background: var(--gold-bright); }
+
+.btn-outline {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: transparent;
+}
+.btn-outline:hover { background: var(--gold); color: var(--bg); }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  padding: 7rem 0 5rem;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse at top right, rgba(201,162,39,0.10), transparent 55%),
+    var(--bg);
+  overflow: hidden;
+}
+
+.hero-label {
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  color: var(--cream);
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+.hero p.lede {
+  max-width: 40em;
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+  color: var(--muted);
+}
+
+.hero-cta {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- Page header (non-home pages) ---------- */
+
+.page-header {
+  padding: 4.5rem 0 3rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-header h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
+
+.page-header p { color: var(--muted); margin-top: 0.9rem; max-width: 40em; }
+
+/* ---------- Sections ---------- */
+
+section { padding: 4.5rem 0; }
+
+.section-head { margin-bottom: 2.5rem; }
+.section-head h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-top: 0.5rem; }
+
+.divider {
+  width: 48px;
+  height: 3px;
+  background: var(--gold);
+  margin: 1.25rem 0;
+}
+
+/* ---------- Genre / stat strip ---------- */
+
+.strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.strip-item {
+  flex: 1 1 200px;
+  padding: 2rem 1.5rem;
+  border-right: 1px solid var(--line);
+}
+.strip-item:last-child { border-right: none; }
+
+.strip-item .num {
+  font-family: 'Anton', sans-serif;
+  font-size: 2.2rem;
+  color: var(--gold);
+}
+
+.strip-item .label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.3rem;
+}
+
+/* ---------- Ticket-stub cards (signature element) ---------- */
+
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 26px -16px rgba(0, 0, 0, 0.75);
+}
+
+.ticket-main {
+  padding: 1.75rem 1.75rem;
+}
+
+.ticket-date {
+  color: var(--gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.ticket-main h3 { font-size: 1.5rem; margin-bottom: 0.4rem; }
+
+.ticket-main p { color: var(--muted); font-size: 0.95rem; }
+
+.ticket-stub {
+  border-left: 2px dashed var(--line);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-width: 150px;
+  background: var(--bg-alt);
+}
+
+.ticket-stub .loc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ticket::before,
+.ticket::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--bg);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.ticket::before { right: 148px; margin-right: -11px; }
+.ticket::after { right: -11px; }
+
+/* ---------- Cards grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 8px 24px -14px rgba(0, 0, 0, 0.7);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover { border-color: var(--gold); transform: translateY(-2px); }
+
+.card h3 { font-size: 1.2rem; color: var(--gold-bright); margin-bottom: 0.6rem; letter-spacing: 0.02em;}
+
+.card p { color: var(--muted); font-size: 0.95rem; }
+
+/* Two-up layout (e.g. About page story + sidebar card) */
+.about-split {
+  grid-template-columns: 1.2fr 1fr;
+  align-items: start;
+}
+
+/* ---------- Forms ---------- */
+
+.form-grid {
+  display: grid;
+  gap: 1.4rem;
+  max-width: 620px;
+}
+
+label {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+input, select, textarea {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  color: var(--cream);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.95rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+textarea { resize: vertical; min-height: 140px; }
+
+.form-note {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 1.5rem;
+}
+
+/* ---------- Contact split ---------- */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+/* <address> renders italic by default in most browsers — turn that off
+   so it reads the same as the rest of the body copy. */
+.contact-list { display: block; font-style: normal; margin-top: 1.5rem; }
+.contact-list .contact-row { padding: 1rem 0; border-top: 1px solid var(--line); }
+.contact-list .contact-row:last-child { border-bottom: 1px solid var(--line); }
+.contact-list .k { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; margin: 0; }
+.contact-list .v { font-size: 1.05rem; margin: 0.3rem 0 0; }
+
+/* ---------- Gallery (CSS Grid with named template areas) ---------- */
+
+.gallery-feature {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "main side-a"
+    "main side-b";
+  gap: 1.25rem;
+}
+
+.gallery-item {
+  /* <figure> ships a default margin in every browser — remove it so the
+     tile still sits flush inside the CSS Grid area like the old <a> did. */
+  margin: 0;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+  min-height: 220px;
+}
+
+.gallery-item a { display: block; width: 100%; height: 100%; }
+
+.gallery-item--main { grid-area: main; }
+.gallery-item--side-a { grid-area: side-a; }
+.gallery-item--side-b { grid-area: side-b; }
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  transform: scale(1.01);
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.gallery-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--cream);
+}
+
+.gallery-item:hover img,
+.gallery-item a:focus-visible img {
+  transform: scale(1.06);
+  filter: saturate(1.15) brightness(1.05);
+}
+
+/* :focus-within targets the figure whenever the <a> inside it has focus,
+   since the figure itself is never a focusable element. */
+.gallery-item:focus-within {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.gallery-item a:active img { transform: scale(1.02); }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 3rem 0 2rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.footer-social { display: flex; gap: 1.25rem; }
+.footer-social a { color: var(--cream); font-weight: 700; letter-spacing: 0.04em; }
+.footer-social a:hover { color: var(--gold); }
+
+/* ---------- Responsive ----------
+   Three breakpoints, mobile-first-in-spirit but written as
+   max-width overrides on top of the desktop base styles above:
+   - Desktop:  > 1024px  (base styles, no media query needed)
+   - Tablet:   ≤ 1024px
+   - Mobile:   ≤ 600px
+   Relative units (rem/em/%) are used throughout so content still
+   scales smoothly *within* each tier, not just at the breakpoints.
+------------------------------------------------------------------ */
+
+/* ----- Tablet (≤ 1024px): tighten spacing, go two-column ----- */
+@media (max-width: 1024px) {
+  .container { padding: 0 1.25rem; }
+  section { padding: 3.5rem 0; }
+
+  .hero { padding: 5rem 0 3.5rem; }
+
+  .grid { grid-template-columns: repeat(2, 1fr); }
+
+  .gallery-feature {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-grid { gap: 2rem; }
+}
+
+/* ----- Mobile (≤ 600px): single column, hamburger nav ----- */
+@media (max-width: 600px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { border-top: 1px solid var(--line); }
+  .nav-links a { display: block; padding: 1rem 1.5rem; border-bottom: none; }
+  .nav { position: relative; }
+
+  .container { padding: 0 1.1rem; }
+  section { padding: 2.75rem 0; }
+
+  .contact-grid { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr; }
+
+  .ticket { grid-template-columns: 1fr; }
+  .ticket-stub { border-left: none; border-top: 2px dashed var(--line); }
+  .ticket::before, .ticket::after { display: none; }
+
+  /* Gallery drops the 2x2 template-area layout for a single stacked column */
+  .gallery-feature {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "main"
+      "side-a"
+      "side-b";
+  }
+  .gallery-item { min-height: 200px; }
+
+  .about-split { grid-template-columns: 1fr !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
