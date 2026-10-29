@@ -1,4 +1,4 @@
-# Session 23 — Website (WEDE5020 PoE)
+# Session 23 — Website (WEDE5020 PoE, Part 3)
 
 Static HTML/CSS/JS website built for **Session 23** ("Party With The English"), an
 Amapiano, House and Hip-Hop events collective operating in Gqeberha and Johannesburg.
@@ -12,7 +12,8 @@ Amapiano, House and Hip-Hop events collective operating in Gqeberha and Johannes
 
 ## Live Site
 
-GitHub Pages URL: *add once Pages is enabled — see setup steps below*
+GitHub Pages URL: `https://YOUR-USERNAME.github.io/session23-poe/` *(replace `YOUR-USERNAME` — see **Deployment** below)*
+GitHub repository: *add the repository link here*
 
 ## Folder Structure
 
@@ -21,13 +22,25 @@ session23-poe/
 ├── index.html                 # Homepage — hero, upcoming events preview, offerings
 ├── about.html                 # Brand story, mission, vision, values
 ├── events.html                # Full events calendar, archive & photo gallery
-├── enquiry.html                # Booking & partnership enquiry form + FAQ
-├── contact.html                # Contact details
+├── enquiry.html               # Services list, enquiry form (cost + availability response), FAQ accordion
+├── contact.html               # Contact details, contact form (compiles an email), map
+├── 404.html                   # Custom "page not found" page
+├── robots.txt                 # Crawler instructions (Part 3 SEO)
+├── sitemap.xml                # Page list for search engines (Part 3 SEO)
 ├── css/
-│   └── style.css              # Shared stylesheet (black & gold identity)
+│   ├── style.css              # Shared stylesheet (black & gold identity)
+│   └── vendor/                # Leaflet CSS + marker images (self-hosted)
 ├── js/
-│   └── script.js               # Shared script (mobile nav toggle)
+│   ├── data.js                # Events, services, pricing rules (single source of truth)
+│   ├── script.js              # Nav toggle, DOM helper, scroll-reveal animation
+│   ├── interactive.js         # jQuery accordion, tabs, modal + gallery lightbox
+│   ├── events.js              # Dynamic event list: search, filter, sort
+│   ├── services.js            # Dynamic services list
+│   ├── map.js                 # Leaflet map + nearest-city geolocation
+│   ├── forms.js               # Validation, enquiry AJAX submit, contact email builder
+│   └── vendor/                # jQuery 3.7.1 + Leaflet 1.9.4 (self-hosted)
 ├── images/
+│   ├── favicon.svg
 │   ├── gallery/                # Responsive event photos (3 widths per photo: 400/800/1600px)
 │   └── screenshots/            # Device-width screenshots used as Part 2 evidence (below)
 ├── documentation/
@@ -164,6 +177,110 @@ what they mean, not just for a styling hook:
   `<figure>` needs its browser margin reset, why `:focus-within` replaces
   `:focus-visible` on the gallery tiles, why `<address>` needs `font-style: normal`.
 
+## Part 3 — Enhancing Functionality and SEO
+
+### 1. Interactive elements
+
+| Requirement | Where | How |
+|---|---|---|
+| Accordion (jQuery) | `enquiry.html` FAQ | `js/interactive.js` — buttons with `aria-expanded`/`aria-controls`, `slideDown`/`slideUp`, one panel open at a time, arrow/Home/End keyboard support |
+| Tabs (jQuery) | `events.html` (Upcoming / Archive / Map) | `role="tablist"`, arrow-key navigation, `fadeIn`, deep links such as `events.html#archive` |
+| Modal | Events page "Details" button | Native `<dialog>` built in JS (`showModal()` gives the focus trap and Esc-to-close); closing returns focus to the button |
+| Interactive map | Events page (Map tab) and `contact.html` | Leaflet + OpenStreetMap tiles, a marker per city (Gqeberha, Johannesburg) with a popup listing that city's events, plus a "Find my nearest city" button using the Geolocation API (only asks permission when clicked) |
+| Animations & transitions | All pages | CSS keyframes for the hero and modals, scroll-reveal using `IntersectionObserver` + CSS transitions, jQuery fade/slide effects; everything switches off under `prefers-reduced-motion` |
+| Advanced DOM manipulation | `js/script.js`, `events.js`, `forms.js`, `interactive.js` | A safe `el()` node builder (text via `createTextNode`, never `innerHTML`), event delegation, `<mark>` search-highlighting by splitting text nodes, dynamically created dialogs/result cards, live character counter, runtime `min`/`max` on the date picker, toggling `required` per service |
+| Gallery with lightbox | Events page (Archive tab) | Click or press Enter on a photo to open the 1600px version in a modal, with previous/next buttons, arrow keys, Esc, "n of 3" caption and alt text; without JavaScript the link opens the image normally |
+
+### 2. Dynamic content
+
+- **Events list** (`js/data.js` → `js/events.js`): events are loaded from a data array and rendered as ticket-stub cards. A search box (debounced), City and Genre filters and a Sort control (soonest, A–Z, Z–A, city) update the list live, with a "no results" state and an `aria-live` result count. A `<noscript>` list keeps the content available to crawlers and no-JS visitors.
+- **Services list** (`js/services.js`): the five service cards on the Enquiry page are built from the same data, and the form's Enquiry Type dropdown is filled from it, so they can never disagree.
+- Changing an event, service or price means editing `js/data.js` in one place.
+
+### 3. Search Engine Optimisation
+
+**3.1 On-page SEO**
+
+| Technique | What was done |
+|---|---|
+| Keyword research | Targets were chosen from how the audience searches: *genre + place* ("Amapiano events Gqeberha", "House music events Johannesburg"), *brand* ("Session 23", "Party With The English") and *action* ("book Amapiano event", "brand partnership"). Each page owns a different cluster (table below) so the pages do not compete with one another. Both "Gqeberha" and the older "Port Elizabeth" are used in body copy because people still search both. |
+| Title tags | Unique, under 65 characters, keyword first: e.g. `Upcoming Amapiano & House Events \| Session 23` |
+| Meta descriptions | Unique per page, 110–145 characters, written as a call to action, plus `keywords`, `author`, `robots` and `theme-color` meta tags |
+| Header tags | Exactly one `<h1>` per page, `<h2>` for sections, `<h3>` for cards/items; no skipped levels |
+| Image optimisation | Descriptive file names (`gallery-nirvana-800.jpg`), meaningful `alt` text on every image, `srcset`/`sizes` so phones download small files, `loading="lazy"`, explicit `width`/`height`, and the 1600px JPEGs re-encoded as progressive JPEG at quality 80 |
+| URL structure | Flat, lowercase, hyphen-free single-word URLs (`/events.html`, `/enquiry.html`); no query strings are needed to reach any page. Event links use `enquiry.html?event=...` only to pre-fill the form |
+| Internal linking | Every page links to the others in the body copy (e.g. About → Events map, Home → Enquiry), not only through the nav; the footer repeats Enquiries and Contact on every page |
+| Mobile-friendliness | Responsive layout (desktop / tablet ≤1024px / mobile ≤600px), viewport meta tag, tap-sized controls, hamburger nav, `skip-link` |
+| Structured data (JSON-LD) | `Organization` (with `areaServed` = both cities, Home/About/Contact), `FAQPage` (Enquiry), `ContactPage` (Contact), `CollectionPage` (Events) |
+| Social sharing | Open Graph + Twitter Card tags on every page so shared links show a title, description and photo |
+
+| Page | Primary keyword focus |
+|---|---|
+| Home | Session 23, Amapiano events Gqeberha, House events Johannesburg |
+| About | Party With The English, Amapiano collective, Port Elizabeth events |
+| Events | upcoming Amapiano events, Hip-Hop events Johannesburg |
+| Enquiry | book Amapiano event, brand partnership, campus event booking |
+| Contact | contact Session 23, events Gqeberha / Johannesburg |
+
+**3.2 Off-page SEO** (plan — these happen outside the codebase)
+
+- **Backlinks:** link the website from the Instagram bio (`@Ses_sion23`) and every event post; ask the venues, DJs, photographers and partner brands from past nights to link to the site from their pages; list events on local what's-on and ticketing sites with a link back; ask campus societies and student media to link when Session 23 events are covered.
+- **Social media:** each page carries Open Graph tags so shares look professional; Instagram is linked in the Contact details and in the footer of every page; post the Archive photos with a link to `events.html#archive`.
+- **Local SEO:** both cities are named in titles, descriptions, headings, footer text and the JSON-LD `areaServed`; the map shows both cities; next step is claiming a Google Business Profile for Gqeberha and Johannesburg once there is a fixed venue/address.
+
+**3.3 Additional requests**
+
+- **`robots.txt`:** allows all pages, blocks `/documentation/` and `/images/screenshots/` (marker evidence, not search content) and points to the sitemap.
+- **`sitemap.xml`:** the five pages with `lastmod`, `changefreq` and `priority` (Home 1.0, Events 0.9, Enquiry 0.8, About/Contact 0.7).
+- **Page speed:** fonts loaded with `<link rel="preconnect">` + `display=swap` instead of a render-blocking CSS `@import`; every script is `defer`red; jQuery and Leaflet are only loaded on the pages that use them (Home and About load no libraries); lazy-loaded responsive images; the lightbox only fetches the large photo when opened; map tiles only load when the map is shown.
+- **Security:** see the table below.
+
+| Measure | Detail |
+|---|---|
+| Content-Security-Policy | Meta tag on every page restricting scripts to the site itself, forms/AJAX to the FormSubmit address and `mailto:`, images to the site and OpenStreetMap tiles, plus `object-src 'none'` and `base-uri 'self'` |
+| Self-hosted libraries | jQuery and Leaflet live in `js/vendor/` and `css/vendor/`, so the site does not trust a third-party CDN with its scripts |
+| XSS protection | All dynamic content is written with `textContent`/`createTextNode`; visitor input (search box, form fields) is never inserted as HTML. Tested with an `<img onerror>` payload in the search box |
+| Input validation | Every form field validated on the client (and the receiving service validates again). HTML5 attributes (`required`, `type`, `maxlength`, `min`/`max`) are used in addition to JavaScript |
+| Spam protection | Hidden honeypot field on both forms (bots fill it in, submissions are silently dropped) |
+| Safe external links | `rel="noopener"` on every `target="_blank"` link; `referrer` meta policy `strict-origin-when-cross-origin` |
+| HTTPS | Enforced by GitHub Pages / Netlify on the deployed site |
+| Privacy | Consent tick box on both forms; Geolocation only on button press |
+
+### 4. Form functionality and validation
+
+**`enquiry.html` (services / bookings / partnerships)**
+
+- Fields: name, email, phone, enquiry type (`<select>`), city (`<select>`), optional event, event date (`<input type="date">`), expected guests (`<input type="number">`), message (`<textarea>`), consent (`<input type="checkbox">`).
+- **Validation:** required fields; name 2–60 letters; email format; South African phone numbers (`082 123 4567`, `+27 82 123 4567`, `0027…`); date must be today or later and within two years; guests a whole number from 10 to 5000; message 10–1000 characters with a live counter; consent ticked. Date and guests are only required for services that can be quoted.
+- **Error handling:** inline `role="alert"` messages under each field, red border and `aria-invalid`, a summary message, focus moved to the first invalid field, errors clear as soon as the field is fixed.
+- **Processing & response:** once valid, the form shows a response card with a reference number, an **indicative cost range** (base fee + per-guest rate from `js/data.js`, +/- range, travel allowance outside Gqeberha/Johannesburg, large-event note above 500 guests) and an **availability check** that compares the chosen date with the minimum lead time for that service (4 weeks private/campus, 6 weeks brand partnership, taken from the FAQ).
+- **AJAX submission:** the form's `action` points at `https://formsubmit.co/contactsession23@gmail.com`; JavaScript intercepts the submit and sends it with `fetch()` as JSON, with a 12-second timeout, a busy state on the button, and a success or failure message. If delivery fails, a pre-filled `mailto:` link is shown so the enquiry is never lost. Without JavaScript the browser posts the form to the same `action`.
+
+**`contact.html` (general messages)**
+
+- Fields: name, email, optional phone, type of message (general / ticket support / media / feedback / other), subject, message, consent — same layout, validation and error handling as the enquiry form.
+- **Email compilation:** once valid, the details are compiled into an email addressed to `contactsession23@gmail.com` (recipient set in `js/data.js` and the form `action`), shown in a review panel with **Open In My Email App** (a `mailto:` link with subject and body pre-filled), **Copy Email Text** and **Edit Message** buttons. The visitor sends the email themselves.
+- **Form action:** `action="mailto:contactsession23@gmail.com"` is the no-JavaScript fallback.
+
+### 5. Testing
+
+The behaviour was tested with an automated jsdom script (events search/filter/sort/reset, modal, tabs and deep links, lightbox, map markers, every validation rule, enquiry cost and availability maths, AJAX success, failure and honeypot paths, contact email compilation, accordion). Also test by hand in a real browser: keyboard-only use of tabs/accordion/lightbox, a phone-width viewport, and Lighthouse (Performance / Accessibility / SEO) on the deployed URL.
+
+## Deployment
+
+The site is plain HTML/CSS/JS, so any free static host works.
+
+**GitHub Pages** — push the repository, then **Settings → Pages → Source: `main` branch, `/ (root)` → Save**. The site appears at `https://<username>.github.io/session23-poe/`.
+**Netlify (alternative)** — drag the project folder onto https://app.netlify.com/drop (no build settings needed).
+
+After the URL is known, replace the placeholder everywhere (canonical links, Open Graph tags, JSON-LD, `sitemap.xml`, `robots.txt`):
+
+```bash
+grep -rl "YOUR-USERNAME.github.io/session23-poe" . --exclude-dir=.git | xargs sed -i 's#YOUR-USERNAME.github.io/session23-poe#<username>.github.io/<repo-name>#g'
+```
+
+The enquiry form uses FormSubmit: the **first** test submission sends an activation email to `contactsession23@gmail.com` — click the link in it once, and later enquiries arrive in that inbox.
+
 ## Screenshot Evidence — Different Screen Sizes
 
 Captured from the live-rendered pages at three widths: **desktop** (1440px),
@@ -205,6 +322,37 @@ pushed as one final snapshot. Going forward the practice is:
   marker (or a teammate) can follow.
 
 ## Changelog
+
+### 2026-10-29 — Part 3: Enhancing Functionality and SEO
+
+**Working through feedback from Part 2**
+
+- **Render-blocking font import:** removed the CSS `@import` for Google Fonts and replaced it with `<link rel="preconnect">` + `<link rel="stylesheet">` in every page `<head>`, so the font request no longer waits for `style.css` to download.
+- **Inline styles removed:** every `style="…"` attribute left over from Parts 1–2 (buttons, section borders, muted copy, testimonial footers, contact links) moved into reusable classes in `style.css` (`.link-gold`, `.btn-sm`, `.section-border`, `.copy-muted`, `.quote-by`, …), so layout can be changed from one file and overridden in media queries.
+- **Invalid `<time datetime="">`:** removed the empty `datetime` attribute from events with unconfirmed dates (an empty value is invalid HTML); real `<time datetime="YYYY-MM-DD">` markup can be added when dates are confirmed. The events data now carries `date: null` until then.
+- **Navigation consistency:** all five pages now use the same nav with `aria-label="Main"`, `aria-controls` on the menu button, and a "Skip to main content" link; the footer now links Enquiries as well as Contact on every page.
+- **Gallery images:** the 1600px photos were re-encoded as progressive JPEG (quality 80), reducing the archive from about 2.09 MB to 1.87 MB with no visible loss.
+- **TODO comments:** the in-page `TODO` comments were moved out of the HTML into the **Still To Do** list below, so no unfinished-work notes ship in the markup.
+- **Internal linking and content:** added contextual links between pages (About → Events map, Home → Enquiry, Contact → Enquiry), and added Gqeberha/"Port Elizabeth" local wording to About and Contact.
+- **Accessibility:** consistent `:focus-visible` outlines on all controls, labelled form fields with `aria-describedby`/`aria-invalid`, `role="alert"` errors and `aria-live` status messages.
+- **Responsive evidence:** layout rules for the new components (filter bar, tabs, modals, forms, map) were added to the existing tablet and mobile breakpoints.
+- **Contact page form (new):** the Contact page previously had only details. It now has a message form with the same fields, layout and validation as the Enquiry form (see section 4).
+
+**New in Part 3**
+
+- **`js/data.js` (new):** events, services, pricing rules and the contact email in one place.
+- **`js/script.js`:** added the safe `el()` DOM helper, Escape-to-close on the mobile menu and the scroll-reveal animation (`IntersectionObserver`).
+- **`js/interactive.js` (new, jQuery):** FAQ accordion, three-tab Events layout with deep links, native `<dialog>` modal and the gallery lightbox.
+- **`js/events.js` (new):** events rendered dynamically with search (with match highlighting), city/genre filters and four sort orders.
+- **`js/services.js` (new):** services rendered dynamically; "Choose This" fills the form.
+- **`js/map.js` (new):** Leaflet map with a marker and event popup per city and a "Find my nearest city" geolocation button, on the Events (Map tab) and Contact pages.
+- **`js/forms.js` (new):** shared validation rules, inline errors, character counter, honeypot, enquiry cost/availability response with AJAX submission and mailto fallback, and the contact email compiler.
+- **`events.html`:** rebuilt around tabs (Upcoming / Archive / Map); the three static ticket cards were replaced with the dynamic list (with a `<noscript>` fallback); gallery links now open the lightbox.
+- **`enquiry.html`:** added the services list, phone/city/date/guests/consent fields, the response card and the jQuery FAQ accordion (replacing the `<details>` elements).
+- **`contact.html`:** added the contact form, email preview panel and map.
+- **SEO:** new unique titles and meta descriptions, keywords, canonical links, Open Graph/Twitter tags, JSON-LD structured data, `robots.txt`, `sitemap.xml`, favicon and a custom `404.html`.
+- **Security:** Content-Security-Policy and referrer policy meta tags, self-hosted jQuery and Leaflet, textContent-only DOM writes, honeypot spam trap, consent checkbox.
+- **Vendor libraries:** jQuery 3.7.1 (MIT) and Leaflet 1.9.4 (BSD-2-Clause) added under `js/vendor/` and `css/vendor/` with their licences.
 
 ### 2026-09-15 — Part 1 feedback fixes
 
@@ -281,13 +429,14 @@ Addressing the marked feedback on Formative 1 Part 1 (59.5/100):
 
 ## Still To Do Before Submission
 
-- [ ] Replace placeholder event dates/venues in `index.html` and `events.html` with
-      confirmed details
-- [ ] Confirm final contact email in `contact.html`
-- [ ] Wire the enquiry form up to a real submission handler (e.g. Formspree) if required
-- [ ] Re-run the screenshot evidence above once event dates/venues are confirmed
-- [ ] Enable GitHub Pages and add the live URL at the top of this README
-- [ ] Continue committing after every change from here on (see **Git Workflow**)
+- [ ] Replace placeholder event dates/venues in `js/data.js`, `index.html` and `events.html` with confirmed details (set `date: 'YYYY-MM-DD'` in `data.js` and the "Soonest first" sort starts working)
+- [ ] Review the indicative prices in `js/data.js` (`base`, `perGuest`) — they are starting-point placeholders
+- [ ] Replace `YOUR-USERNAME` in the canonical/Open Graph/sitemap/robots URLs once the live URL is known (see **Deployment**)
+- [ ] Click the FormSubmit activation email once after the first live test submission
+- [ ] Re-run the screenshot evidence above (the images still show the Part 2 layout) and add Part 3 screenshots of the lightbox, map and form validation
+- [ ] Add the live site URL and the GitHub repository link at the top of this README and submit the repository link on the LMS
+- [ ] Run Lighthouse on the live site and note the scores
+- [ ] Continue committing after every change (see **Git Workflow**)
 
 ## References
 
@@ -330,13 +479,20 @@ Referencing style: Harvard (author-date), as required by IIE.
   Focus Visible*. Available at:
   https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html (Accessed: 15
   September 2026).
+- Leaflet (no date) *Leaflet — an open-source JavaScript library for interactive maps*. Available at: https://leafletjs.com/ (Accessed: 29 October 2026).
+- jQuery Foundation (no date) *jQuery API Documentation*. Available at: https://api.jquery.com/ (Accessed: 29 October 2026).
+- OpenStreetMap contributors (no date) *OpenStreetMap*. Available at: https://www.openstreetmap.org/copyright (Accessed: 29 October 2026).
+- FormSubmit (no date) *FormSubmit documentation (AJAX)*. Available at: https://formsubmit.co/ajax-documentation (Accessed: 29 October 2026).
+- Google (no date) *Search Engine Optimization (SEO) Starter Guide*. Available at: https://developers.google.com/search/docs/fundamentals/seo-starter-guide (Accessed: 29 October 2026).
+- Google (no date) *Introduction to robots.txt* and *Build and submit a sitemap*. Available at: https://developers.google.com/search/docs/crawling-indexing/robots/intro (Accessed: 29 October 2026).
+- Google (no date) *Intro to structured data markup*. Available at: https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data (Accessed: 29 October 2026).
+- Mozilla Developer Network (no date) *<dialog>: The Dialog element*. Available at: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog (Accessed: 29 October 2026).
+- Mozilla Developer Network (no date) *Intersection Observer API*. Available at: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API (Accessed: 29 October 2026).
+- Mozilla Developer Network (no date) *Content Security Policy (CSP)*. Available at: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP (Accessed: 29 October 2026).
+- Mozilla Developer Network (no date) *Client-side form validation*. Available at: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation (Accessed: 29 October 2026).
+- Mozilla Developer Network (no date) *Geolocation API*. Available at: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API (Accessed: 29 October 2026).
+- World Wide Web Consortium (W3C) (no date) *ARIA Authoring Practices Guide: Tabs and Accordion patterns*. Available at: https://www.w3.org/WAI/ARIA/apg/patterns/ (Accessed: 29 October 2026).
+- Open Web Application Security Project (OWASP) (no date) *Cross Site Scripting Prevention Cheat Sheet*. Available at: https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html (Accessed: 29 October 2026).
+- GitHub (no date) *Creating a GitHub Pages site*. Available at: https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site (Accessed: 29 October 2026).
 - Event photography: own photography, Session 23 events, Gqeberha (2026),
   reproduced with permission for use in this coursework project only.
-
-## Setup — GitHub Pages
-
-1. Push this repository to GitHub (public), committing regularly as you go — see
-   **Git Workflow** above.
-2. Go to **Settings → Pages**.
-3. Under **Source**, select the `main` branch and `/ (root)` folder, then **Save**.
-4. GitHub will publish the site at `https://<username>.github.io/<repo-name>/`.
