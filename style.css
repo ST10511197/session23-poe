@@ -1,9 +1,9 @@
 /* ==========================================================================
    Session 23 — "Party With The English"
    Stylesheet
+   (Google Fonts are now loaded with <link> tags in each page <head> instead of
+   a CSS @import, so the font request no longer waits for this file to load.)
    ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
   --bg: #0b0b0c;
@@ -597,3 +597,355 @@ textarea { resize: vertical; min-height: 140px; }
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+
+
+/* ==========================================================================
+   PART 3 ADDITIONS
+   Utilities, animations, tabs, accordion, modal/lightbox, event filters,
+   forms, results, map, skip link. (Inline style="" attributes from Parts 1-2
+   were moved into the utility classes below.)
+   ========================================================================== */
+
+/* ---------- Utilities (replace former inline styles) ---------- */
+.link-gold { color: var(--gold); }
+.link-gold:hover { color: var(--gold-bright); }
+.btn-sm { padding: 0.5rem 1rem; font-size: 0.7rem; }
+.section-border { border-top: 1px solid var(--line); }
+.copy-muted { color: var(--muted); }
+.copy-muted + .copy-muted { margin-top: 1rem; }
+.copy-wide { max-width: 60em; }
+.h2-lg { font-size: 1.8rem; margin-bottom: 1rem; }
+.h2-md { font-size: 1.5rem; }
+.mb-1 { margin-bottom: 1rem; }
+.quote-by { margin-top: 1rem; color: var(--gold-bright); font-size: 0.85rem; letter-spacing: 0.04em; }
+.contact-link { color: inherit; }
+.justify-start { justify-self: start; }
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+[hidden] { display: none !important; }
+
+/* Skip link: first focusable element, jumps keyboard users past the nav. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--gold);
+  color: var(--bg);
+  padding: 0.7rem 1.1rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* Visible keyboard focus on every interactive control (WCAG 2.4.7). */
+a:focus-visible, button:focus-visible, summary:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+}
+
+/* ---------- Animations & transitions ---------- */
+/* Hero text rises in on load (CSS keyframes). */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero .hero-label, .hero h1, .hero .lede, .hero .hero-cta {
+  animation: rise 0.7s ease both;
+}
+.hero h1 { animation-delay: 0.1s; }
+.hero .lede { animation-delay: 0.22s; }
+.hero .hero-cta { animation-delay: 0.34s; }
+
+/* Scroll reveal: script.js adds .reveal-ready, then .is-visible on entry. */
+.reveal-ready {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-ready.is-visible { opacity: 1; transform: none; }
+
+/* Cards that JS renders fade in as they appear after a search/filter. */
+.reveal-in { animation: rise 0.4s ease both; }
+
+.btn:active { transform: translateY(1px); }
+.nav-links a, .card, .ticket { transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+.ticket:hover { border-color: var(--gold); box-shadow: 0 14px 30px -14px rgba(201, 162, 39, 0.35); }
+
+/* ---------- Chips ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin-top: 0.9rem; }
+.chips li {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--gold-bright);
+  border: 1px solid var(--line);
+  background: var(--bg-alt);
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+.ticket-stub .btn { width: 100%; text-align: center; }
+
+/* ---------- Tabs ---------- */
+.tablist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2.5rem;
+}
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--muted);
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.4rem;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.tab:hover { color: var(--cream); }
+.tab.is-active { color: var(--cream); border-bottom-color: var(--gold); }
+
+/* ---------- Event controls ---------- */
+.controls {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
+}
+.controls label { margin-bottom: 0.4rem; }
+.controls .btn { padding: 0.85rem 1.2rem; }
+.result-count { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.25rem; }
+.empty-state {
+  border: 1px dashed var(--line);
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+}
+mark { border-radius: 2px; }
+
+/* ---------- Accordion ---------- */
+.accordion-item {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+.accordion-item.is-open { border-color: var(--gold); }
+.accordion-item h3 { font-family: 'Manrope', sans-serif; text-transform: none; letter-spacing: 0; font-size: 1rem; }
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--cream);
+  font: inherit;
+  font-weight: 700;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+}
+.accordion-trigger::after {
+  content: "+";
+  color: var(--gold);
+  font-family: 'Anton', sans-serif;
+  transition: transform 0.25s ease;
+}
+.accordion-trigger[aria-expanded="true"]::after { content: "\2013"; }
+.accordion-panel { padding: 0 1.25rem 1.1rem; }
+.accordion-panel p { color: var(--muted); font-size: 0.95rem; }
+.accordion-panel a { color: var(--gold); }
+
+/* ---------- Modal + lightbox (native <dialog>) ---------- */
+.modal {
+  margin: auto;
+  width: min(92vw, 560px);
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--bg-card);
+  color: var(--cream);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 0;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.9);
+}
+.modal[open] { animation: rise 0.28s ease both; }
+.modal::backdrop { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(3px); }
+.modal-body { padding: 2.25rem 2rem 2rem; }
+.modal-title { font-size: 2rem; margin: 0.4rem 0 0.8rem; }
+.modal-text { color: var(--muted); margin: 1.25rem 0 1.5rem; }
+.modal-meta { display: flex; gap: 2rem; margin-top: 1.25rem; }
+.modal-meta dt { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+.modal-meta dd { color: var(--cream); }
+.modal-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 2;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(11, 11, 12, 0.8);
+  color: var(--cream);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.modal-close:hover { background: var(--gold); color: var(--bg); }
+
+.modal--lightbox { width: min(94vw, 900px); background: #000; border-color: var(--line); }
+.modal--lightbox .modal-body { padding: 0; }
+.lightbox { position: relative; margin: 0; }
+.lightbox-img { width: 100%; max-height: 82vh; object-fit: contain; background: #000; }
+.lightbox-caption {
+  padding: 0.9rem 1.25rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--cream);
+  background: var(--bg-card);
+}
+.lightbox-nav {
+  position: absolute;
+  top: 40%;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(11, 11, 12, 0.75);
+  color: var(--cream);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.lightbox-nav:hover { background: var(--gold); color: var(--bg); }
+.lightbox-prev { left: 0.6rem; }
+.lightbox-next { right: 0.6rem; }
+.gallery-item a { cursor: zoom-in; }
+
+/* ---------- Form additions ---------- */
+.form-grid .field { display: block; }
+.form-grid .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+.req { color: var(--gold-bright); margin-left: 0.2rem; }
+.field-hint, .char-count { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; }
+.char-count { text-align: right; }
+.char-count.is-over { color: #ff8f8f; }
+.field-error { color: #ff8f8f; font-size: 0.85rem; margin-top: 0.4rem; min-height: 0; }
+.field.has-error input, .field.has-error select, .field.has-error textarea { border-color: #ff8f8f; }
+.field.has-error .field-error::before { content: "\26A0\00a0"; }
+select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%), linear-gradient(135deg, var(--gold) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 2.5rem; }
+input[type="date"] { color-scheme: dark; }
+.check { display: flex; gap: 0.75rem; align-items: flex-start; }
+.check input { width: 1.15rem; height: 1.15rem; margin-top: 0.2rem; accent-color: var(--gold); flex: none; }
+.check label { margin: 0; text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--cream); font-size: 0.9rem; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-status { font-size: 0.9rem; margin-top: 0.5rem; }
+.form-status--error { color: #ff8f8f; }
+.form-status--ok { color: #8fe3a4; }
+.form-status a { color: var(--gold-bright); text-decoration: underline; }
+button[disabled] { opacity: 0.6; cursor: wait; }
+
+/* ---------- Result / email preview cards ---------- */
+.result-card {
+  max-width: 620px;
+  margin-top: 2.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 2rem;
+  animation: rise 0.45s ease both;
+}
+.result-card h2 { font-size: 1.9rem; margin: 0.4rem 0 1.25rem; }
+.result-card:focus { outline: none; }
+.result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.result-grid dt, .email-preview dt { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+.result-grid dd { overflow-wrap: anywhere; }
+.result-block { border-left: 3px solid var(--gold); padding: 0.4rem 0 0.4rem 1rem; margin-bottom: 1.25rem; }
+.result-block h3 { font-size: 0.95rem; color: var(--gold-bright); margin-bottom: 0.3rem; }
+.result-block p { color: var(--muted); font-size: 0.95rem; }
+.result-block--good { border-left-color: #8fe3a4; }
+.result-block--tight { border-left-color: #ffcf6e; }
+.result-figure { font-family: 'Anton', sans-serif; font-size: 1.9rem; color: var(--cream) !important; letter-spacing: 0.02em; }
+.result-note { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+.result-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+.email-preview > div { padding: 0.8rem 0; border-top: 1px solid var(--line); }
+.email-preview dd { overflow-wrap: anywhere; }
+.email-body { white-space: pre-wrap; color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- Services list ---------- */
+.service-card { display: flex; flex-direction: column; gap: 1rem; }
+.service-card p { flex: 1; }
+.service-card .price { font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+
+/* ---------- Map ---------- */
+.map-wrap { margin-top: 1rem; }
+#session-map {
+  height: 420px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+}
+.map-fallback { padding: 2rem; color: var(--muted); }
+.map-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1rem; }
+.map-tools p { color: var(--muted); font-size: 0.9rem; }
+.map-popup { color: #111; font-family: 'Manrope', sans-serif; }
+.map-popup strong { display: block; font-size: 1rem; margin-bottom: 0.3rem; }
+.map-popup-list { margin: 0 0 0.5rem 1.1rem; }
+.map-popup a { color: #7a5f00; font-weight: 700; }
+.leaflet-container { font-family: 'Manrope', sans-serif; }
+
+/* ---------- Footer links / local SEO line ---------- */
+.footer-blurb { max-width: 34em; }
+.footer-social a, .nav-links a { transition: color 0.2s ease; }
+
+/* ---------- 404 ---------- */
+.not-found { text-align: center; padding: 6rem 0; }
+.not-found h1 { font-size: clamp(4rem, 14vw, 8rem); color: var(--gold); }
+
+/* ---------- Part 3 responsive tweaks ---------- */
+@media (max-width: 1024px) {
+  .controls { grid-template-columns: 1fr 1fr; }
+  .controls .field-search { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .controls { grid-template-columns: 1fr; }
+  .form-grid .two-col { grid-template-columns: 1fr; }
+  .tab { padding: 0.8rem 0.9rem; font-size: 0.75rem; }
+  .modal-body { padding: 2rem 1.25rem 1.5rem; }
+  .modal-meta { flex-direction: column; gap: 0.75rem; }
+  #session-map { height: 320px; }
+  .result-card { padding: 1.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-label, .hero h1, .hero .lede, .hero .hero-cta,
+  .reveal-in, .modal[open], .result-card { animation: none !important; }
+  .reveal-ready { opacity: 1; transform: none; }
+}
+
+/* Keep the reveal fade and the hover effects working together on cards/tickets. */
+.reveal-ready.card, .reveal-ready.ticket {
+  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.card.is-visible:hover { transform: translateY(-2px); }
